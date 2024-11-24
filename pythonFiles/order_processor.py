@@ -4,6 +4,13 @@ def process_orders(prices, orders):
     customer_suitcases = {}
     all_items = {}
 
+    additional_items = [
+        "LEATHER LUGGAGE TAG - Black", "LEATHER LUGGAGE TAG - Noir",
+        "RIVIERA TOILETRY CASE - Marron / 5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯",
+        "COMPRESSIBLE PACKING CUBES - Black", "COMPRESSIBLE PACKING CUBES - Grey",
+        "COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES - Beige"
+    ]
+
     for order in orders:
         name = order["name"]
         item = order["item"]
@@ -17,10 +24,11 @@ def process_orders(prices, orders):
 
         cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").strip()
 
-        # Skip the item if it's not in the prices map
-        if cleaned_item not in prices:
+        # Skip the item if it's not in the prices map (only for regular items)
+        if cleaned_item not in prices and cleaned_item not in additional_items:
             continue
 
+        # Store information about customer orders
         if name not in customer_suitcases:
             customer_suitcases[name] = {"Large": 0, "Carry-on": 0}
             all_items[name] = []
@@ -30,7 +38,9 @@ def process_orders(prices, orders):
         elif cleaned_item == "Nomad Aluminium Suitcase - Carry-on":
             customer_suitcases[name]["Carry-on"] += quantity
 
-        # Store all the items for later printing (apply the first country for all)
+        if cleaned_item in additional_items:
+            print(f"Processing additional item: {cleaned_item} (Quantity: {quantity})")
+
         all_items[name].append({
             "item": cleaned_item,
             "quantity": quantity,
@@ -38,23 +48,31 @@ def process_orders(prices, orders):
             "price": prices.get(cleaned_item, {}).get(country, 0)
         })
 
+    # Print out the results for all items
     for name, items in all_items.items():
-        print(f"Name: {name}")
+        print(f"\nName: {name}")
 
         large_count = customer_suitcases.get(name, {}).get("Large", 0)
         carry_on_count = customer_suitcases.get(name, {}).get("Carry-on", 0)
 
         for item in items:
 
+            # Skip items if combined suitcase logic applies (one of each)
             if item["item"] == "Nomad Aluminium Suitcase - Large" and carry_on_count > 0:
                 continue
             if item["item"] == "Nomad Aluminium Suitcase - Carry-on" and large_count > 0:
                 continue
+
+            # Print details for each item
             print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Price: {item['price']:.2f}")
 
+        # If both large and carry-on suitcases are ordered, show the combined item
         combined_count = min(large_count, carry_on_count)
         if combined_count > 0:
-
             combined_country = customer_country_map[name]  # Use the first item country
             combined_price = prices.get("Nomad Aluminium Suitcase - Carry-on + Large", {}).get(combined_country, 0)
             print(f"  Item: Nomad Aluminium Suitcase - Carry-on + Large, Country: {combined_country}, Quantity: {combined_count}, Price: {combined_price:.2f}")
+
+        for item in items:
+            if item["item"] in additional_items:
+                print(f"  Additional Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Price: ")
