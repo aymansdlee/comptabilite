@@ -73,3 +73,20 @@ def read_orders(filename):
         return None
 
     return orders
+    
+
+def read_product_prices(filepath):
+    """Reads product prices and costs (COGS) from a CSV file."""
+    product_data = {}
+    try:
+        with open(filepath, mode='r', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            for row in csv_reader:
+                item = row.get("Item", "").strip()
+                price = float(row.get("Price", 0))
+                cost = float(row.get("Cost", 0))  # Assuming the CSV includes a "Cost" column
+                if item:
+                    product_data[item] = {"price": price, "cost": cost}
+    except Exception as e:
+        print(f"Error reading product prices: {e}")
+    return product_data
