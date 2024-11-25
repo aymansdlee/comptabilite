@@ -33,16 +33,15 @@ def process_orders(prices, orders):
 
         # Store information about customer orders
         if name not in customer_suitcases:
-            customer_suitcases[name] = {"Large": 0, "Carry-on": 0}
+            customer_suitcases[name] = {"Large": 0, "Carry-on": 0, "Medium": 0}
             all_items[name] = []
 
         if cleaned_item == "Nomad Aluminium Suitcase - Large":
             customer_suitcases[name]["Large"] += quantity
         elif cleaned_item == "Nomad Aluminium Suitcase - Carry-on":
             customer_suitcases[name]["Carry-on"] += quantity
-
-        if cleaned_item in additional_items:
-            print(f"Processing additional item: {cleaned_item} (Quantity: {quantity})")
+        elif cleaned_item == "Nomad Aluminium Suitcase - Medium":
+            customer_suitcases[name]["Medium"] += quantity
 
         all_items[name].append({
             "item": cleaned_item,
@@ -57,45 +56,54 @@ def process_orders(prices, orders):
 
         large_count = customer_suitcases.get(name, {}).get("Large", 0)
         carry_on_count = customer_suitcases.get(name, {}).get("Carry-on", 0)
+        medium_count = customer_suitcases.get(name, {}).get("Medium", 0)
 
         totalOrderPrice = 0
 
         # If both large and carry-on suitcases are ordered, show the combined item
         combined_count = min(large_count, carry_on_count)
         if combined_count > 0:
-            combined_country = customer_country_map[name]  # Use the first item country
+            combined_country = customer_country_map[name]
             combined_price = prices.get("Nomad Aluminium Suitcase - Carry-on + Large", {}).get(combined_country, 0)
             combined_total_price = combined_price * combined_count
-            print(f"  Item: Nomad Aluminium Suitcase - Carry-on + Large, Country: {combined_country}, Quantity: {combined_count}, Price: {combined_price:.2f}")
+            print(f"  Item: Nomad Aluminium Suitcase - Carry-on + Large, Country: {combined_country}, Quantity: {combined_count}, Price: {combined_total_price:.2f}")
             totalOrderPrice += combined_total_price
 
-        # Handle remaining large suitcases if any
+        # Handle remaining large suitcases
         remaining_large_count = large_count - combined_count
         if remaining_large_count > 0:
             large_country = customer_country_map[name]
             large_price = prices.get("Nomad Aluminium Suitcase - Large", {}).get(large_country, 0)
             large_total_price = large_price * remaining_large_count
-            print(f"  Item: Nomad Aluminium Suitcase - Large, Country: {large_country}, Quantity: {remaining_large_count}, Price: {large_price:.2f}")
+            print(f"  Item: Nomad Aluminium Suitcase - Large, Country: {large_country}, Quantity: {remaining_large_count}, Price: {large_total_price:.2f}")
             totalOrderPrice += large_total_price
 
-        # Handle remaining carry-on suitcases if any
+        # Handle remaining carry-on suitcases
         remaining_carry_on_count = carry_on_count - combined_count
         if remaining_carry_on_count > 0:
             carry_on_country = customer_country_map[name]
             carry_on_price = prices.get("Nomad Aluminium Suitcase - Carry-on", {}).get(carry_on_country, 0)
             carry_on_total_price = carry_on_price * remaining_carry_on_count
-            print(f"  Item: Nomad Aluminium Suitcase - Carry-on, Country: {carry_on_country}, Quantity: {remaining_carry_on_count}, Price: {carry_on_price:.2f}")
+            print(f"  Item: Nomad Aluminium Suitcase - Carry-on, Country: {carry_on_country}, Quantity: {remaining_carry_on_count}, Price: {carry_on_total_price:.2f}")
             totalOrderPrice += carry_on_total_price
+
+        # Handle medium suitcases
+        if medium_count > 0:
+            medium_country = customer_country_map[name]
+            medium_price = prices.get("Nomad Aluminium Suitcase - Medium", {}).get(medium_country, 0)
+            medium_total_price = medium_price * medium_count
+            print(f"  Item: Nomad Aluminium Suitcase - Medium, Country: {medium_country}, Quantity: {medium_count}, Price: {medium_total_price:.2f}")
+            totalOrderPrice += medium_total_price
 
         # Include additional items in the total order price
         for item in items:
-            if item["item"] not in ["Nomad Aluminium Suitcase - Large", "Nomad Aluminium Suitcase - Carry-on"]:
+            if item["item"] not in ["Nomad Aluminium Suitcase - Large", "Nomad Aluminium Suitcase - Carry-on", "Nomad Aluminium Suitcase - Medium"]:
                 item_total_price = item["price"] * item["quantity"]
-                print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Price: {item['price']:.2f}")
+                print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Price: {item_total_price:.2f}")
                 totalOrderPrice += item_total_price
 
-        print(f"  Total Order Price for order {name}: {totalOrderPrice:.2f}")
-        grandTotalPriceEuro += totalOrderPrice * 0.957  # prix total en euros basé sur le taux d'ajd
+        print(f"  Total Shipping Price for order {name}: {totalOrderPrice:.2f}")
+        grandTotalPriceEuro += totalOrderPrice * 0.957
         grandTotalPriceUsd += totalOrderPrice
 
-    print(f"\n\Total Shipping Price for All Orders: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
+    print(f"\nTotal Shipping Price for All Orders: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
