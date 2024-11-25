@@ -4,6 +4,13 @@ def process_orders(prices, orders):
     customer_suitcases = {}
     all_items = {}
 
+    additional_items = [
+        "LEATHER LUGGAGE TAG - Black", "LEATHER LUGGAGE TAG - Noir",
+        "RIVIERA TOILETRY CASE - Marron / 5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯",
+        "COMPRESSIBLE PACKING CUBES - Black", "COMPRESSIBLE PACKING CUBES - Grey",
+        "COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES - Beige"
+    ]
+
     for order in orders:
         name = order["name"]
         item = order["item"]
