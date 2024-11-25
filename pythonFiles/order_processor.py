@@ -149,6 +149,6 @@ def process_orders(prices, orders):
 
     print(f"\nTotal Shipping Cost for All Orders: {totalShippingCostEuro:.2f}€ or ${totalShippingCostUsd:.2f}")
     print(f"Total Product Cost for all orders: {totalProductCostEuro:.2f}€ or ${totalProductCostUsd:.2f}")
-    print(f"Total Product Cost for all orders: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
+    print(f"Total Cost for all orders product and shipping: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
 
 
