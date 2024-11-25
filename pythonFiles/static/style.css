@@ -1,4 +1,4 @@
-/* General Reset and Styling */
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f7fa; /* Whitish-grey background */
+    background-color: #f4f7fa;
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -16,7 +16,7 @@ body {
     padding: 20px;
 }
 
-/* Container Styling */
+
 .container {
     width: 100%;
     max-width: 800px;
@@ -28,7 +28,7 @@ body {
     overflow: hidden;
 }
 
-/* Header Styling */
+
 header {
     text-align: center;
     padding: 20px 0;
@@ -42,13 +42,11 @@ header h1 {
     font-weight: bold;
 }
 
-/* Main Content Styling */
 main {
     padding: 20px;
     text-align: center;
 }
 
-/* Navigation Menu */
 .menu-container {
     display: flex;
     justify-content: center;
@@ -81,13 +79,12 @@ main {
 
 .menu a:hover {
     transform: translateY(-3px);
-    background: #2563eb; /* Darker blue on hover */
+    background: #2563eb;
 }
 
-/* Results and Form Styling */
 .results {
     padding: 20px;
-    background: #f4f7fa; /* Light grey */
+    background: #f4f7fa;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-top: 20px;
@@ -99,7 +96,7 @@ main {
 .results pre {
     white-space: pre-wrap;
     word-wrap: break-word;
-    background: #e2e8f0; /* Light grey for preformatted text */
+    background: #e2e8f0;
     padding: 10px;
     border-radius: 5px;
 }
@@ -147,7 +144,6 @@ form button:hover {
     transform: translateY(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .menu {
         grid-template-columns: 1fr;
@@ -172,4 +168,46 @@ form button:hover {
         font-size: 0.9rem;
         padding: 8px 12px;
     }
+}
+
+
+
+.container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 400px;
+    max-width: 90%;
+}
+
+h1 {
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cost-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cost-list li {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }

@@ -35,7 +35,7 @@ def process_orders(prices, orders):
         if name in customer_country_map and country == "":
             country = customer_country_map[name]
 
-        cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").replace("- Beige", "").replace("- Grey", "").replace("COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES").replace("COMPRESSIBLE PACKING CUBES - Black", "COMPRESSIBLE PACKING CUBES").replace("RIVIERA TOILETRY CASE - Marron  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Noir  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Black  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").strip()
+        cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").replace("- Beige", "").replace("- Grey", "").replace("COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES").replace("COMPRESSIBLE PACKING CUBES - Black", "COMPRESSIBLE PACKING CUBES").replace("RIVIERA TOILETRY CASE - Marron  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Noir  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Black  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("NOMAD ALUMINIUM SUITCASE‎ ‎ ‎ ‎ ", "Nomad Aluminium Suitcase ").replace("Nomad Aluminium Suitcase.", "Nomad Aluminium Suitcase").strip()
 
         # Store information about customer orders
         if name not in customer_suitcases:
@@ -141,8 +141,8 @@ def process_orders(prices, orders):
         grandTotalPriceEuro += (totalShippingCost + totalProductCost) * 0.957
         grandTotalPriceUsd += totalShippingCost + totalProductCost
 
-    print(f"\nTotal Shipping Cost for All Orders: {totalShippingCostEuro:.2f}€ or ${totalShippingCostUsd:.2f}")
-    print(f"Total Product Cost for all orders: {totalProductCostEuro:.2f}€ or ${totalProductCostUsd:.2f}")
-    print(f"Total Cost for all orders product and shipping: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
+    print(f"\nTotal Shipping Cost for All Order: {totalShippingCostEuro:.2f}€ or ${totalShippingCostUsd:.2f}")
+    print(f"Total Product Cost for all order: {totalProductCostEuro:.2f}€ or ${totalProductCostUsd:.2f}")
+    print(f"Total Cost for all order product and shipping: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
 
     return totalShippingCostEuro, totalShippingCostUsd, totalProductCostEuro, totalProductCostUsd, grandTotalPriceEuro, grandTotalPriceUsd

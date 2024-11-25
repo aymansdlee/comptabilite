@@ -23,28 +23,40 @@ def home():
 @app.route('/total_shipping_cost')
 def total_shipping_cost():
     totalShippingCostEuro, totalShippingCostUsd, *_ = totals
-    return jsonify({
-        "total_shipping_cost_euro": f"{totalShippingCostEuro:.2f}€",
-        "total_shipping_cost_usd": f"${totalShippingCostUsd:.2f}"
-    })
+    return render_template(
+        'styled_cost.html',
+        title="Total Shipping Cost",
+        costs=[
+            {"label": "Total Shipping Cost (Euros)", "value": f"{totalShippingCostEuro:.2f}€"},
+            {"label": "Total Shipping Cost (USD)", "value": f"${totalShippingCostUsd:.2f}"}
+        ]
+    )
 
 
 @app.route('/total_product_cost')
 def total_product_cost():
     _, _, totalProductCostEuro, totalProductCostUsd, *_ = totals
-    return jsonify({
-        "total_product_cost_euro": f"{totalProductCostEuro:.2f}€",
-        "total_product_cost_usd": f"${totalProductCostUsd:.2f}"
-    })
+    return render_template(
+        'styled_cost.html',
+        title="Total Product Cost",
+        costs=[
+            {"label": "Total Product Cost (Euros)", "value": f"{totalProductCostEuro:.2f}€"},
+            {"label": "Total Product Cost (USD)", "value": f"${totalProductCostUsd:.2f}"}
+        ]
+    )
 
 
 @app.route('/grand_total_cost')
 def grand_total_cost():
     *_, grandTotalPriceEuro, grandTotalPriceUsd = totals
-    return jsonify({
-        "grand_total_cost_euro": f"{grandTotalPriceEuro:.2f}€",
-        "grand_total_cost_usd": f"${grandTotalPriceUsd:.2f}"
-    })
+    return render_template(
+        'styled_cost.html',
+        title="Grand Total Cost",
+        costs=[
+            {"label": "Grand Total Cost (Euros)", "value": f"{grandTotalPriceEuro:.2f}€"},
+            {"label": "Grand Total Cost (USD)", "value": f"${grandTotalPriceUsd:.2f}"}
+        ]
+    )
 
 
 @app.route('/all_orders')
@@ -73,20 +85,28 @@ def track_order():
         customer_orders = [order for order in orders if order["name"].lower() == customer_name.lower()]
 
         if not customer_orders:
-            return f"No orders found for customer: {customer_name}"
+            return render_template('styled_message.html', message=f"No orders found for customer: {customer_name}")
 
+        # Process the customer's orders
         from io import StringIO
         import sys
 
-        # Capture the process_orders output
+        # Capture process_orders output
         old_stdout = sys.stdout
         sys.stdout = buffer = StringIO()
         process_orders(prices, customer_orders)
         sys.stdout = old_stdout
 
-        # Return the captured output as a string
+        # Retrieve structured result
         output = buffer.getvalue()
-        return f"<pre>{output}</pre>"
+
+        # Parse the output into structured data
+        sections = []
+        for line in output.split("\n"):
+            if "Item:" in line or "Total" in line:
+                sections.append(line.strip())
+
+        return render_template('customer_orders.html', name=customer_name, sections=sections)
 
     return render_template('track_order.html')
 

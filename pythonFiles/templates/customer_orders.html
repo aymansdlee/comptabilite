@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details for {{ name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='customer_orders.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Order Details for {{ name }}</h1>
+        <div class="order-details">
+            {% for section in sections %}
+            <div class="section">
+                {% if "Item:" in section %}
+                <p class="item"><strong>Item:</strong> {{ section.split("Item:")[1] }}</p>
+                {% elif "Total Shipping Price" in section %}
+                <p class="shipping"><strong>Total Shipping Price:</strong> {{ section.split(':')[1] }}</p>
+                {% elif "Total Product Price" in section %}
+                <p class="product"><strong>Total Product Price:</strong> {{ section.split(':')[1] }}</p>
+                {% elif "Total Order Cost" in section %}
+                <p class="order-total"><strong>Total Order Cost:</strong> {{ section.split(':')[1] }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>
