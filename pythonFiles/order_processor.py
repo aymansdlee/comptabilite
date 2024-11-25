@@ -122,7 +122,7 @@ def process_orders(prices, orders):
         # Include additional items in the total order price
         for item in items:
             if item["item"] not in ["Nomad Aluminium Suitcase - Large", "Nomad Aluminium Suitcase - Carry-on", "Nomad Aluminium Suitcase - Medium"]:
-                item_total_price = item["price"] * item["quantity"]
+                item_total_price = 0 # add this instead of 0 if you want to calculate shipping as the product price multiplied by the quantity purchased, or replace with a specific price instead of 0. Line: item["price"] * item["quantity"]
                 product_cost = cost_of_goods.get(item["item"], 0) * item["quantity"] # si ca ne trouve pas ca met 0, WARNING masjuscule sensitive
                 print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Shipping Price: ${item_total_price:.2f}, Product Price: ${product_cost:.2f}")
                 totalShippingCost += 0
