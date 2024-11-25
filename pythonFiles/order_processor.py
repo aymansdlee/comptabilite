@@ -9,14 +9,10 @@ def process_orders(prices, orders):
         "Carry-on": 46.954,
         "Medium": 54.5495,
         "Large": 64.4927,
-        "Compressible Packing Cubes - Black": 6.9,
-        "Compressible Packing Cubes - Grey": 6.9,
-        "Compressible Packing Cubes - Noir": 6.9,
-        "Compressible Packing Cubes - Beige": 6.9,
+        "COMPRESSIBLE PACKING CUBES": 6.9,
         "LEATHER LUGGAGE TAG - Black": 0.7,
         "LEATHER LUGGAGE TAG - Noir": 0.7,
-        "RIVIERA TOILETRY CASE - Marron / 5.5𝘪𝘯": 15.0,
-        "RIVIERA TOILETRY CASE - Black / 5.5𝘪𝘯": 15.0,
+        "RIVIERA TOILETRY CASE": 9.9,
     }
 
     grandTotalPriceEuro = 0
@@ -39,7 +35,7 @@ def process_orders(prices, orders):
         if name in customer_country_map and country == "":
             country = customer_country_map[name]
 
-        cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").strip()
+        cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").replace("- Beige", "").replace("- Grey", "").replace("COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES").replace("COMPRESSIBLE PACKING CUBES - Black", "COMPRESSIBLE PACKING CUBES").replace("RIVIERA TOILETRY CASE - Marron  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Noir  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").replace("RIVIERA TOILETRY CASE - Black  5.5𝘪𝘯 𝘹 9.8𝘪𝘯 𝘹 5.9𝘪𝘯 (14𝘤𝘮 𝘹 25𝘤𝘮 𝘹 15 𝘤𝘮)", "RIVIERA TOILETRY CASE").strip()
 
         # Store information about customer orders
         if name not in customer_suitcases:
@@ -53,11 +49,15 @@ def process_orders(prices, orders):
         elif cleaned_item == "Nomad Aluminium Suitcase - Medium":
             customer_suitcases[name]["Medium"] += quantity
 
-        price = prices.get(cleaned_item, 0)  # Default to 0 if not in prices
-        if isinstance(price, dict):
-            item_price = price.get(country, 0)
+        # Use cost_of_goods price for specific items
+        if cleaned_item in cost_of_goods:
+            item_price = cost_of_goods[cleaned_item]
         else:
-            item_price = price
+            price = prices.get(cleaned_item, 0)  # Default to 0 if not in prices
+            if isinstance(price, dict):
+                item_price = price.get(country, 0)
+            else:
+                item_price = price
 
         all_items[name].append({
             "item": cleaned_item,
@@ -123,9 +123,9 @@ def process_orders(prices, orders):
         for item in items:
             if item["item"] not in ["Nomad Aluminium Suitcase - Large", "Nomad Aluminium Suitcase - Carry-on", "Nomad Aluminium Suitcase - Medium"]:
                 item_total_price = item["price"] * item["quantity"]
-                product_cost = cost_of_goods.get(item["item"], 0) * item["quantity"]
+                product_cost = cost_of_goods.get(item["item"], 0) * item["quantity"] # si ca ne trouve pas ca met 0, WARNING masjuscule sensitive
                 print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Shipping Price: ${item_total_price:.2f}, Product Price: ${product_cost:.2f}")
-                totalShippingCost += item_total_price
+                totalShippingCost += 0
                 totalProductCost += product_cost
 
         print(f"  Total Shipping Price for order {name}: ${totalShippingCost:.2f}")
