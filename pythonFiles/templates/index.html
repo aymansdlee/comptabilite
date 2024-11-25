@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Order Tracking System</h1>
+        </header>
+        <main>
+            <div class="menu-container">
+                <ul class="menu">
+                    <li><a href="/total_shipping_cost">View Total Shipping Cost</a></li>
+                    <li><a href="/total_product_cost">View Total Product Cost</a></li>
+                    <li><a href="/grand_total_cost">View Grand Total Cost</a></li>
+                    <li><a href="/track_order">Track a Customer Order</a></li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

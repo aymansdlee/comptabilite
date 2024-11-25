@@ -24,17 +24,32 @@ def print_all_orders(prices, orders):
     print("\nAll Orders:")
     process_orders(prices, orders)  # Directly calls the function to display orders
 
+def print_order_by_name(prices, orders):
+    """
+    Asks for a customer name and prints the detailed order for that name using `process_orders`.
+    """
+    customer_name = input("\nEnter the customer name you want to track: ").strip()
+    
+    # Filter the orders for the given customer name
+    customer_orders = [order for order in orders if order["name"].lower() == customer_name.lower()]
+    
+    if not customer_orders:
+        print(f"No orders found for customer: {customer_name}")
+        return
+
+    print(f"\nOrders for {customer_name}:")
+    process_orders(prices, customer_orders)  # Reuse `process_orders` to display the filtered orders
+
+
 
 def main_menu(prices, totals, orders):
-    """
-    Main menu to navigate through various functionalities.
-    """
     actions = {
         "1": lambda: show_total_shipping_cost(totals),
         "2": lambda: show_total_product_cost(totals),
         "3": lambda: show_grand_total_cost(totals),
         "4": lambda: print_all_orders(prices, orders),
-        "5": exit
+        "5": lambda: print_order_by_name(prices, orders),
+        "6": exit
     }
 
     while True:
@@ -43,7 +58,8 @@ def main_menu(prices, totals, orders):
         print("2. Show Total Product Cost")
         print("3. Show Total Cost (Product + Shipping)")
         print("4. Show All Orders")
-        print("5. Exit")
+        print("5. Track a Customer Order by Name")
+        print("6. Exit")
 
         choice = input("Choose an option: ")
         action = actions.get(choice)
@@ -51,6 +67,7 @@ def main_menu(prices, totals, orders):
             action()
         else:
             print("Invalid option, please try again.")
+
 
 
 def main():
