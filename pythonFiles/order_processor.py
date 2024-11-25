@@ -11,6 +11,8 @@ def process_orders(prices, orders):
         "COMPRESSIBLE PACKING CUBES - Noir", "COMPRESSIBLE PACKING CUBES - Beige"
     ]
 
+    grandTotalPrice = 0  # To accumulate total for all orders
+
     for order in orders:
         name = order["name"]
         item = order["item"]
@@ -91,5 +93,7 @@ def process_orders(prices, orders):
                 print(f"  Item: {item['item']}, Country: {item['country']}, Quantity: {item['quantity']}, Price: {item['price']:.2f}")
                 totalOrderPrice += item_total_price
 
-        # Print final total order price for the customer
-        print(f"  Total Order Price for {name}: {totalOrderPrice:.2f}")
+        print(f"  Total Order Price for order {name}: {totalOrderPrice:.2f}")
+        grandTotalPrice += totalOrderPrice * 0.957  # prix total en euros basé sur le taux d'ajd
+
+    print(f"\Shipping Total Price for All Orders: {grandTotalPrice:.2f}")
