@@ -17,7 +17,6 @@ def process_orders(prices, orders):
         "LEATHER LUGGAGE TAG - Noir": 0.7,
         "RIVIERA TOILETRY CASE - Marron / 5.5𝘪𝘯": 15.0,
         "RIVIERA TOILETRY CASE - Black / 5.5𝘪𝘯": 15.0,
-
     }
 
     grandTotalPriceEuro = 0
@@ -28,7 +27,6 @@ def process_orders(prices, orders):
 
     totalShippingCostUsd = 0
     totalShippingCostEuro = 0
-
 
     for order in orders:
         name = order["name"]
@@ -43,10 +41,6 @@ def process_orders(prices, orders):
 
         cleaned_item = item.replace("/ Black", "").replace("/ Silver", "").replace("/", "").strip()
 
-        # Skip the item if it's not in the prices map (now includes product prices)
-        if cleaned_item not in prices:
-            continue
-
         # Store information about customer orders
         if name not in customer_suitcases:
             customer_suitcases[name] = {"Large": 0, "Carry-on": 0, "Medium": 0}
@@ -59,7 +53,7 @@ def process_orders(prices, orders):
         elif cleaned_item == "Nomad Aluminium Suitcase - Medium":
             customer_suitcases[name]["Medium"] += quantity
 
-        price = prices.get(cleaned_item)
+        price = prices.get(cleaned_item, 0)  # Default to 0 if not in prices
         if isinstance(price, dict):
             item_price = price.get(country, 0)
         else:
@@ -150,5 +144,3 @@ def process_orders(prices, orders):
     print(f"\nTotal Shipping Cost for All Orders: {totalShippingCostEuro:.2f}€ or ${totalShippingCostUsd:.2f}")
     print(f"Total Product Cost for all orders: {totalProductCostEuro:.2f}€ or ${totalProductCostUsd:.2f}")
     print(f"Total Cost for all orders product and shipping: {grandTotalPriceEuro:.2f}€ or ${grandTotalPriceUsd:.2f}")
-
-

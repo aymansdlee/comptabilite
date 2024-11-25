@@ -84,7 +84,7 @@ def read_product_prices(filepath):
             for row in csv_reader:
                 item = row.get("Item", "").strip()
                 price = float(row.get("Price", 0))
-                cost = float(row.get("Cost", 0))  # Assuming the CSV includes a "Cost" column
+                cost = float(row.get("Cost", 0))
                 if item:
                     product_data[item] = {"price": price, "cost": cost}
     except Exception as e:
